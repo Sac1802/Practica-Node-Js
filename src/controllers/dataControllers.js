@@ -37,4 +37,30 @@ function enlistData(req, res){
     });
 }
 
-module.exports = {saveData, enlistData};
+function updateData(req, res){
+    let id = req.params.id;
+    let data = req.body;
+
+    Data.findByIdAndUpdate(id, data, {new: true}, (err, result) => {
+        if(err){
+            res.status(500).send({message: err});
+        }else{
+            res.status(200).send({message: result});
+        }
+    });
+}
+
+function deleteData(req, res){
+    let id = req.params.id;
+
+    Data.findOneAndDelete(id, (err, result) => {
+        if(err){
+            res.status(500).send({message: err})
+        }else{
+            res.status(200).send({message: result});
+        }
+    })
+}
+
+
+module.exports = {saveData, enlistData, updateData, deleteData};

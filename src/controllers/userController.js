@@ -1,5 +1,6 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
+const Data = require('../models/data');
 
 async function saveUser(req, res){
     let myUser = new User(req.body);
@@ -25,4 +26,16 @@ async function saveUser(req, res){
     }
 }
 
-module.exports = {saveUser};
+function deleteUser(req, res){
+    let id = req.params.id;
+
+    Data.findByIdAndDelete(id, (err, result) => {
+        if(err){
+            res.status(403).send({message: err})
+        }else{
+            res.status(200).send({message: result})
+        }
+    });
+}
+
+module.exports = {saveUser, deleteUser};
